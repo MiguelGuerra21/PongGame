@@ -16,7 +16,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.control.Label;
 import java.util.*;
 import javafx.scene.shape.Shape;
-public class ExperimentoBola extends Application
+public class Juego extends Application
 {
     private int velocidadEnX;
     private int velocidadEnY;
@@ -83,11 +83,8 @@ public class ExperimentoBola extends Application
                         velocidadEnX = -velocidadEnX;                              
                     }
 
-                    if (bola.comprobarChoquePlataforma(plataforma1)){
-                        velocidadEnY = -velocidadEnY;
-                    }
-
-                    if (bola.comprobarChoquePlataforma(plataforma2)) {
+                    if (bola.comprobarChoquePlataforma(plataforma1) || 
+                    bola.comprobarChoquePlataforma(plataforma2)){
                         velocidadEnY = -velocidadEnY;
                     }
 
@@ -97,11 +94,11 @@ public class ExperimentoBola extends Application
                     plataforma1.setTranslateX(plataforma1.getTranslateX() + velocidadPlataforma1);
                     plataforma2.setTranslateX(plataforma2.getTranslateX() + velocidadPlataforma2);
 
-                    if (plataforma1.getBoundsInParent().getMinX() == 0  || plataforma1.getBoundsInParent().getMaxX() == escena.getWidth()) {
+                    if (plataforma1.getBoundsInParent().getMinX() <= 0  || plataforma1.getBoundsInParent().getMaxX() >= escena.getWidth()) {
                         velocidadPlataforma1 = 0;
                     }
 
-                    if(plataforma2.getBoundsInParent().getMinX() == 0 || plataforma2.getBoundsInParent().getMaxX() == escena.getWidth()){
+                    if(plataforma2.getBoundsInParent().getMinX() <= 0 || plataforma2.getBoundsInParent().getMaxX() >= escena.getWidth()){
                         velocidadPlataforma2 = 0;
                     }
 
@@ -109,20 +106,19 @@ public class ExperimentoBola extends Application
                     int minutos = tiempoEnSegundos / 60;
                     int segundos = tiempoEnSegundos % 60;
                     tiempoPasado.setText(minutos + ":" + segundos);                        
-
-                    if (bola.getBoundsInParent().getMinY() >= escena.getHeight()) {
-                        golesJ2++;
-                        puntosJ1.setText("J2 : " + golesJ2);
-                        bola.recolocar();
-                    }
-
-                    if (bola.getBoundsInParent().getMinY() <= 0) {
+                    
+                    //Si la bola impacta arriba es punto para el J1 y la bola se vuelve a la pista
+                    if (bola.comprobarChoqueArriba()) { 
                         golesJ1++;
                         puntosJ1.setText("J1 : " + golesJ1);
-                        bola.recolocar();
                     }
-
-                    if(golesJ1 == 5){
+                    //Si la bola impacta abajo es punto para el J2 y la bola se vuelve a la pista
+                    if (bola.comprobarChoqueAbajo()) {
+                        golesJ2++;
+                        puntosJ2.setText("J2 : " + golesJ2);
+                    }
+                    //Comprueba que haya ganado el J1
+                    if(golesJ1 == 1){
                         Label ganoJ1 = new Label("Ha ganado el J1");
                         ganoJ1.setTextFill(Color.WHITE);
                         ganoJ1.setLayoutX(escena.getWidth() / 2);
@@ -130,8 +126,8 @@ public class ExperimentoBola extends Application
                         contenedor.getChildren().add(ganoJ1);
                         timeline.stop();
                     }
-
-                    if(golesJ2 == 5){
+                    //Comprueba que haya ganado el J2
+                    if(golesJ2 == 1){
                         Label ganoJ2 = new Label("Ha ganado el J2");
                         ganoJ2.setTextFill(Color.WHITE);
                         ganoJ2.setLayoutX(escena.getWidth() / 2);

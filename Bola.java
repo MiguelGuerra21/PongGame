@@ -47,14 +47,24 @@ public class Bola extends Circle
         return choque;
     }
 
+    public boolean comprobarChoqueArriba(){
+        boolean choque = false;
+        if(this.getBoundsInParent().getMinY() <= 0){
+            choque = true;
+        }
+        return choque;
+    }
+    
+    public boolean comprobarChoqueAbajo(){
+        boolean choque = false;
+        if(this.getBoundsInParent().getMaxY() >= 500){
+            choque = true;
+        }
+        return choque;
+    }
+    
     public void desplazar(){
         setTranslateX(getTranslateX() + velocidadEnX);
         setTranslateY(getTranslateY() + velocidadEnY);
-    }
-    
-    public void recolocar(){
-        Random aleatorio = new Random();
-        setCenterX(50 + aleatorio.nextInt(500 - 40));
-        setCenterY(100);
     }
 }
