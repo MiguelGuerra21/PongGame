@@ -10,3 +10,5 @@ VERSION or DATE:
 HOW TO START THIS PROJECT:
 AUTHORS:
 USER INSTRUCTIONS:
+Como jugador 1(abajo) usa las flechas de control para mover tu plataforma.
+Como jugador 2(arriba) usa wd para mover tu plataforma.
